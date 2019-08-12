@@ -1,1 +1,43 @@
 <?php
+define("DATABASE", "WebSite");
+define("DSN", "mysql:host=localhost;dbname=" . DATABASE);
+define("USER", "root");
+define("PASSWORD", "123");
+
+define("TABLE_USERS", "users");
+define("COLUMN_USERS_USERNAME", "username");
+define("COLUMN_USERS_PASSWORD", "password");
+define("COLUMN_USERS_NAME", "name");
+define("COLUMN_USERS_SURNAME", "surname");
+
+
+class Dao{
+    private $conn;
+    public $error;
+
+    function __construct()
+    {
+        try {
+            $this->conn = new PDO(DSN, USER, PASSWORD);
+
+        } catch (PDOException $e) {
+            $this->error = "Connection error: " . $e->getMessage();
+        }
+    }
+
+    function isConnected()
+    {
+        return isset($this->conn);
+    }
+
+    function validateUser($user, $password)
+    {
+        $sql = "SELECT * FROM " . TABLE_USERS . " WHERE " . COLUMN_USERS_USERNAME . "='" . $user . "' AND " . COLUMN_USERS_PASSWORD . "=sha1('" . $password . "')";
+        // Ejecutar la sentencia del objeto PDO
+        $statement = $this->conn->query($sql);
+        if ($statement->rowCount() == 1)
+            return true;
+        else
+            return false;
+    }
+}
