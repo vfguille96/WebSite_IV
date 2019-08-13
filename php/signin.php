@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] == "POST") {
             $app->init_session($user);
             $app->loginCorrect($user);
         } else {
-            $app->loginFailed();
+            $app->failed("Wrong username or password.");
         }
     }
 }

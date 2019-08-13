@@ -11,7 +11,8 @@ define("COLUMN_USERS_NAME", "name");
 define("COLUMN_USERS_SURNAME", "surname");
 
 
-class Dao{
+class Dao
+{
     private $conn;
     public $error;
 
@@ -37,8 +38,29 @@ class Dao{
         return ($statement->rowCount() == 1) ? true : false;
     }
 
-    function showNameSurname($username){
-        $sql = "SELECT ".COLUMN_USERS_NAME.", ".COLUMN_USERS_SURNAME. " FROM ".TABLE_USERS. " WHERE ". COLUMN_USERS_USERNAME. " = '".$username."'";
+    function validateUserSignUp($user)
+    {
+        $sql = "SELECT * FROM " . TABLE_USERS . " WHERE " . COLUMN_USERS_USERNAME . "='" . $user . "'";
+        $statement = $this->conn->query($sql);
+        return ($statement->rowCount() == 1) ? true : false;
+    }
+
+    function showNameSurname($username)
+    {
+        $sql = "SELECT " . COLUMN_USERS_NAME . ", " . COLUMN_USERS_SURNAME . " FROM " . TABLE_USERS . " WHERE " . COLUMN_USERS_USERNAME . " = '" . $username . "'";
         return $this->conn->query($sql)->fetchAll();
+    }
+
+    function registerUser($username, $password, $name, $surname)
+    {
+        try {
+            $sql = "INSERT INTO " . TABLE_USERS . " VALUES ('" . $username . "', sha1('" . $password . "'), '" . $name . "', '" . $surname . "')";
+            $this->conn->exec($sql);
+            return ($this->validateUser($username, $password)) ? true : false;
+        } catch (PDOException $e) {
+            $this->error = "Error: " . $this->$e->getMessage();
+            echo $this->error;
+            return false;
+        }
     }
 }

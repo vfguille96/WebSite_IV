@@ -59,7 +59,7 @@ class App
         }
     }
 
-    function loginFailed(){
-        echo "<p><h1 style='color: darkred'>Wrong username or password</h1></p>";
+    function failed($message){
+        echo "<p><h1 style='color: darkred'>".$message."</h1></p>";
     }
 }
