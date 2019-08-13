@@ -33,11 +33,12 @@ class Dao{
     function validateUser($user, $password)
     {
         $sql = "SELECT * FROM " . TABLE_USERS . " WHERE " . COLUMN_USERS_USERNAME . "='" . $user . "' AND " . COLUMN_USERS_PASSWORD . "=sha1('" . $password . "')";
-        // Ejecutar la sentencia del objeto PDO
         $statement = $this->conn->query($sql);
-        if ($statement->rowCount() == 1)
-            return true;
-        else
-            return false;
+        return ($statement->rowCount() == 1) ? true : false;
+    }
+
+    function showNameSurname($username){
+        $sql = "SELECT ".COLUMN_USERS_NAME.", ".COLUMN_USERS_SURNAME. " FROM ".TABLE_USERS. " WHERE ". COLUMN_USERS_USERNAME. " = '".$username."'";
+        return $this->conn->query($sql)->fetchAll();
     }
 }

@@ -31,7 +31,7 @@ class App
             unset ($_SESSION['user']);
         }
         session_destroy();
-        $this->showLogin();
+        $this->showSignIn();
     }
 
     function showSignIn()
@@ -50,5 +50,16 @@ class App
         if (!$this->isLogged()) {
             $this->showSignIn();
         }
+    }
+
+    function loginCorrect($username){
+        $nameSurname = $this->dao->showNameSurname($username);
+        foreach ($nameSurname as $item){
+            echo "<p><h1 style='color: green'>Welcome, ".$item['name']." ".$item['surname']."!</h1></p>";
+        }
+    }
+
+    function loginFailed(){
+        echo "<p><h1 style='color: darkred'>Wrong username or password</h1></p>";
     }
 }

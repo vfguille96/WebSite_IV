@@ -1,7 +1,7 @@
 function showSignIn() {
-    window.location.assign("../php/signin.php");
+    window.location.assign("signin_page.html");
 }
 
 function showSignUp() {
-    window.location.assign("../php/signup.php");
+    window.location.assign("signup_page.html");
 }
